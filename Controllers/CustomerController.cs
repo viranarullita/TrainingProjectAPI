@@ -79,7 +79,6 @@ namespace TrainingProjectAPI.Controllers
                     return Ok("Delete Customer Succes");
                 }
 
-
                 return NotFound("Data tidak ditemukan!");
             }
             catch (Exception ex)

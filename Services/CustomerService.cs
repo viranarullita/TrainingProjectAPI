@@ -20,8 +20,12 @@ namespace TrainingProjectAPI.Services
 
         public Customer GetById(int customerId)
         {
-            var databyId = _context.Customers.Where(x => x.Id == customerId).FirstOrDefault();
-            return databyId;
+            var databyId = _context.Customers.FirstOrDefault(x => x.Id == customerId);
+            if (databyId != null)
+            {
+                return databyId;
+            }
+            return null; 
         }
 
         public bool CreateCustomer(Customer customer)

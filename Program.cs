@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MySqlConnector;
 using TrainingProjectAPI.Models;
@@ -20,6 +21,9 @@ builder.Services.AddDbContext<ApplicationContext>(
 
 builder.Services.AddScoped<CustomerService>();
 
+builder.Services.AddScoped<ItemService>();
+
+
 
 // Add services to the container.
 builder.Services.AddControllers();
@@ -35,6 +39,11 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+builder.Services.Configure<ApiBehaviorOptions>(options =>
+{
+    options.SuppressModelStateInvalidFilter = true;
+});
 
 app.UseHttpsRedirection();
 
