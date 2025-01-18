@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using TrainingProjectAPI.Models;
 using TrainingProjectAPI.Models.DB;
+using TrainingProjectAPI.Models.DTO;
 using TrainingProjectAPI.Services;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -19,8 +20,8 @@ namespace TrainingProjectAPI.Controllers
         }
 
 
-        // GET: api/<CustomerController>
-        [HttpGet]
+        // GET: api/<CustomerController>    
+        [HttpGet("GetListCustomer")]
         public IActionResult Get()
         {
             try
@@ -47,16 +48,47 @@ namespace TrainingProjectAPI.Controllers
         }
 
         // GET api/<CustomerController>/5
-        [HttpGet("{id}")]
+        [HttpGet]
+        [Route("GetCustomerById/{id}")]
         public IActionResult GetById(int id)
         {
-            var CustomerId = _customerService.GetById(id);
-            return Ok(CustomerId);
+            try
+            {
+                var customerData = _customerService.GetById(id);
+                if (customerData != null)
+                {
+                    var response = new GeneralResponse
+                    {
+                        StatusCode = "01",
+                        StatusDesc = "Success",
+                        Data = customerData
+                    };
+                    return Ok(response);
+                }
+
+                var responseFailed = new GeneralResponse
+                {
+                    StatusCode = "02",
+                    StatusDesc = "Customer not found",
+                    Data = null
+                };
+                return NotFound(responseFailed);
+            }
+            catch (Exception ex)
+            {
+                var errorResponse = new GeneralResponse
+                {
+                    StatusCode = "99",
+                    StatusDesc = "Failed | " + ex.Message,
+                    Data = null
+                };
+                return BadRequest(errorResponse);
+            }
         }
 
         // POST api/<CustomerController>
-        [HttpPost]
-        public IActionResult Post(Customer customer)
+        [HttpPost("InsertDataCustomer")]
+        public IActionResult Post(CustomerRequestDTO customer)
         {
             try
             {
@@ -93,12 +125,13 @@ namespace TrainingProjectAPI.Controllers
         }
 
         // PUT api/<CustomerController>/5
+        [Route("UpdateCustomer")] //untuk menambah endpoint
         [HttpPut]
-        public IActionResult Put(Customer customer)
+        public IActionResult Put(int Id, CustomerRequestDTO customer)
         {
             try
             {
-                var updateCustomer = _customerService.UpdateCustomer(customer);
+                var updateCustomer = _customerService.UpdateCustomer(Id, customer);
                 if (updateCustomer)
                 {
                     var responseSucces = new GeneralResponse
@@ -131,7 +164,7 @@ namespace TrainingProjectAPI.Controllers
         }
 
         // DELETE api/<CustomerController>/5
-        [HttpDelete]
+        [HttpDelete("DeleteCustomer")]
         public IActionResult Delete(int id)
         {
             try
