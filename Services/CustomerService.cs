@@ -1,5 +1,6 @@
 ﻿using TrainingProjectAPI.Models;
 using TrainingProjectAPI.Models.DB;
+using TrainingProjectAPI.Models.DTO;
 
 namespace TrainingProjectAPI.Services
 {
@@ -12,23 +13,52 @@ namespace TrainingProjectAPI.Services
             _context = context;
         }
 
-        public List<Customer> GetListCustomer()
+        public List<CustomerDTO> GetListCustomer()
         {
-            var datas = _context.Customers.ToList();
+            var datas = _context.Customers.Select(x => new CustomerDTO
+            {
+                Id = x.Id.ToString(),
+                Name = x.Name,
+                Address = x.Address,
+                City = x.City,
+                PhoneNumber = x.PhoneNumber,
+                CreatedDate = x.CreatedDate != null ? x.CreatedDate.Value.ToString("dd/MM/yyyy H:mm:ss") : "",
+                UpdatedDate = x.UpdatedDate != null ? x.UpdatedDate.Value.ToString("dd/MM/yyyy H:mm:ss") : "",
+
+            }).ToList();
             return datas;
         }
 
-        public Customer GetById(int customerId)
+        public CustomerDTO GetById(int customerId)
         {
-            var databyId = _context.Customers.Where(x => x.Id == customerId).FirstOrDefault();
+            var databyId = _context.Customers.Where(x => x.Id == customerId).Select(x => new CustomerDTO
+            {
+                Id = x.Id.ToString(),
+                Name = x.Name,
+                Address = x.Address,
+                City = x.City,
+                PhoneNumber = x.PhoneNumber,
+                CreatedDate = x.CreatedDate != null ? x.CreatedDate.Value.ToString("dd/MM/yyyy H:mm:ss") : "",
+                UpdatedDate = x.UpdatedDate != null ? x.UpdatedDate.Value.ToString("dd/MM/yyyy H:mm:ss") : "",
+            }).FirstOrDefault();
             return databyId;
         }
 
-        public bool CreateCustomer(Customer customer)
+        public bool CreateCustomer(CustomerRequestDTO customer)
         {
             try
             {
-                _context.Customers.Add(customer);
+                var InsertDataCustomer = new Customer
+                {
+                    Name = customer.Name,
+                    Address = customer.Address,
+                    City = customer.City,
+                    PhoneNumber = customer.PhoneNumber,
+                    CreatedDate = DateTime.Now,
+                    UpdatedDate = DateTime.Now,
+                };
+                _context.Customers.Add(InsertDataCustomer);
+
                 _context.SaveChanges();
                 return true;
             }
@@ -38,17 +68,19 @@ namespace TrainingProjectAPI.Services
             }
         }
 
-        public bool UpdateCustomer(Customer customer)
+        public bool UpdateCustomer(int Id, CustomerRequestDTO customer)
         {
             try
             {
-                var customerOld = _context.Customers.Where(x => x.Id == customer.Id).FirstOrDefault();
+                var customerOld = _context.Customers.Where(x => x.Id == Id).FirstOrDefault();
+
                 if (customerOld != null)
                 {
                     customerOld.Name = customer.Name;
                     customerOld.Address = customer.Address;
                     customerOld.City = customer.City;
                     customerOld.PhoneNumber = customer.PhoneNumber;
+                    customerOld.UpdatedDate = DateTime.Now;
 
                     _context.SaveChanges();
                     return true;
@@ -79,6 +111,11 @@ namespace TrainingProjectAPI.Services
             {
                 throw;
             }
+        }
+
+        internal bool UpdateCustomer(int id, CustomerDTO customer)
+        {
+            throw new NotImplementedException();
         }
     }
 }
