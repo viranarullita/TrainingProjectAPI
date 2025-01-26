@@ -221,7 +221,7 @@ namespace TrainingProjectAPI.Controllers
                     StatusDesc = "Data tidak ditemukan",
                     Data = null
                 };
-                return BadRequest(responseFailed);
+                return NotFound(responseFailed);
             }
             catch (Exception ex)
             {
