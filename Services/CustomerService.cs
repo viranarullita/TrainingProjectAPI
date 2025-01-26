@@ -112,10 +112,5 @@ namespace TrainingProjectAPI.Services
                 throw;
             }
         }
-
-        internal bool UpdateCustomer(int id, CustomerDTO customer)
-        {
-            throw new NotImplementedException();
-        }
     }
 }
