@@ -22,8 +22,7 @@ namespace TrainingProjectAPI.Controllers
             _customerService = customerService;
         }
 
-
-        // GET: api/<CustomerController>    
+        // GET: api/<CustomerController>
         [HttpGet("GetListCustomer")]
         public IActionResult Get()
         {
