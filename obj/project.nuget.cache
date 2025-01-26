@@ -1,9 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "C19aeDDgEAk=",
+  "dgSpecHash": "uxqQ57atuJI=",
   "success": true,
   "projectFilePath": "C:\\Users\\craft\\OneDrive\\Dokumen\\C# Lanjutan\\TrainingProjectAPI\\TrainingProjectAPI.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\craft\\.nuget\\packages\\fluentvalidation\\11.11.0\\fluentvalidation.11.11.0.nupkg.sha512",
     "C:\\Users\\craft\\.nuget\\packages\\humanizer\\2.14.1\\humanizer.2.14.1.nupkg.sha512",
     "C:\\Users\\craft\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
     "C:\\Users\\craft\\.nuget\\packages\\humanizer.core.af\\2.14.1\\humanizer.core.af.2.14.1.nupkg.sha512",
